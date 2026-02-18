@@ -1,0 +1,81 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>{{ title }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true" class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Add expense</ion-card-title>
+        <ion-card-subtitle>Track shared costs in one place</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="stacked">Participants</ion-label>
+          <ion-input
+            type="number"
+            min="1"
+            [(ngModel)]="participantCount"
+            placeholder="How many people?"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Expense name</ion-label>
+          <ion-input
+            [(ngModel)]="expenseName"
+            placeholder="Dinner, Cab, Groceries"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Amount</ion-label>
+          <ion-input
+            type="number"
+            min="0"
+            step="0.01"
+            [(ngModel)]="expenseAmount"
+            placeholder="0.00"
+          ></ion-input>
+        </ion-item>
+
+        <div class="button-row">
+          <ion-button expand="block" (click)="addExpense()">Add Expense</ion-button>
+          <ion-button expand="block" fill="outline" color="medium" (click)="clearAll()">
+            Clear
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Summary</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Total:</strong> {{ formatCurrency(totalAmount) }}</p>
+        <p><strong>Each person pays:</strong> {{ formatCurrency(splitPerPerson) }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Expense list</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="expenses.length; else emptyState">
+          <ion-item *ngFor="let expense of expenses; let i = index">
+            <ion-label>{{ i + 1 }}. {{ expense.name }}</ion-label>
+            <ion-label slot="end">{{ formatCurrency(expense.amount) }}</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ng-template #emptyState>
+          <p class="empty-state">No expenses added yet.</p>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</ion-app>
